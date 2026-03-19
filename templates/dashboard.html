@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | URL Shortener</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <div class="card dashboard-card">
+            <div class="topbar dashboard-topbar">
+                <div>
+                    <h2>Analytics Dashboard</h2>
+                    <p class="subtext">Manage your shortened links</p>
+                </div>
+                <div class="top-actions">
+                    <a class="small-btn" href="/">Home</a>
+                    <a class="small-btn danger-btn" href="/logout">Logout</a>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <canvas id="chart"></canvas>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Original URL</th>
+                        <th>Short URL</th>
+                        <th>Clicks</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for d in data %}
+                    <tr>
+                        <td title="{{ d[0] }}">{{ d[0] }}</td>
+                        <td>
+                            <a href="/{{ d[1] }}" target="_blank">{{ d[1] }}</a>
+                        </td>
+                        <td>{{ d[2] }}</td>
+                        <td>
+                            <a href="/delete/{{ d[1] }}"
+                               class="delete-btn"
+                               onclick="return confirm('Are you sure you want to delete this link?')">
+                               Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            {% if not data %}
+            <p class="empty-text">No URLs created yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+           const rawData = JSON.parse('{{ data | tojson | safe }}');
+        const labels = rawData.map(item => item[1]);
+        const clicks = rawData.map(item => item[2]);
+
+        const ctx = document.getElementById('chart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Clicks',
+                    data: clicks
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+</html>

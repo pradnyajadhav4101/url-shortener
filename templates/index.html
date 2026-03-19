@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | URL Shortener</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="card main-card">
+            <div class="topbar">
+                <div>
+                    <h2>URL Shortener</h2>
+                    <p class="subtext">Create short links instantly</p>
+                </div>
+                <div class="top-actions">
+                    <a class="small-btn" href="/dashboard">Dashboard</a>
+                    <a class="small-btn danger-btn" href="/logout">Logout</a>
+                </div>
+            </div>
+
+            {% if message %}
+            <div class="alert">{{ message }}</div>
+            {% endif %}
+
+            <form method="POST" class="main-form">
+                <input type="url" name="url" placeholder="Enter long URL" required>
+                <input type="text" name="custom" placeholder="Custom short code (optional)">
+                <button type="submit">Shorten URL</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

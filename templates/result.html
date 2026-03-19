@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result | URL Shortener</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="card result-card">
+            <h2>Short URL Created</h2>
+            <p class="subtext">Your link is ready to use and share</p>
+
+            <label class="label">Short Link</label>
+            <div class="copy-group">
+                 <input type="text" id="link" value="{{ qr_url }}" readonly placeholder="Shortened URL" title="Shortened URL">
+                <button type="button" onclick="copyLink()">Copy</button>
+            </div>
+
+            <div class="qr-box">
+                <img src="/static/{{ short }}.png" alt="QR Code">
+            </div>
+
+            <div class="result-actions">
+                <a class="small-btn" href="/">Create Another</a>
+                <a class="small-btn" href="/dashboard">Go to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyLink() {
+            const input = document.getElementById("link");
+            navigator.clipboard.writeText(input.value);
+            alert("Copied: " + input.value);
+        }
+    </script>
+</body>
+</html>
